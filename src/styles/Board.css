@@ -1,4 +1,6 @@
-/* ===== Global Layout ===== */
+/* ================================
+   Global Layout
+================================ */
 
 .board-layout {
   display: flex;
@@ -14,7 +16,10 @@
   flex: 1;
 }
 
-/* ===== Navbar ===== */
+
+/* ================================
+   Navbar
+================================ */
 
 .navbar {
   height: 56px;
@@ -32,7 +37,10 @@
   font-size: 16px;
 }
 
-/* ===== Sidebar ===== */
+
+/* ================================
+   Sidebar
+================================ */
 
 .sidebar {
   width: 240px;
@@ -47,7 +55,7 @@
 .sidebar-title {
   font-size: 20px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
   color: #1e293b;
 }
 
@@ -69,7 +77,10 @@
   background-color: #dbeafe;
 }
 
-/* ===== Top Section ===== */
+
+/* ================================
+   Top Section
+================================ */
 
 .top-section {
   display: grid;
@@ -77,6 +88,11 @@
   gap: 24px;
   margin-bottom: 32px;
 }
+
+
+/* ================================
+   Task Input
+================================ */
 
 .task-input-card {
   background-color: #ffffff;
@@ -87,8 +103,7 @@
 }
 
 .task-input-card h3 {
-  margin-top: 0;
-  margin-bottom: 18px;
+  margin: 0 0 18px 0;
   color: #1e293b;
 }
 
@@ -108,7 +123,36 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-/* ===== AI Panel ===== */
+.task-setting-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.task-setting-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.task-select,
+.task-time {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #1e293b;
+}
+
+
+/* ================================
+   AI Assistant Panel
+================================ */
 
 .ai-panel {
   background-color: #ffffff;
@@ -119,8 +163,7 @@
 }
 
 .ai-panel h3 {
-  margin-top: 0;
-  margin-bottom: 16px;
+  margin: 0 0 16px 0;
   color: #1e293b;
 }
 
@@ -156,11 +199,14 @@
   color: #475569;
 }
 
-/* ===== Kanban ===== */
+
+/* ================================
+   Kanban Board
+================================ */
 
 .kanban-title {
   text-align: left;
-  margin-bottom: 18px;
+  margin: 0 0 18px 0;
   font-size: 24px;
   font-weight: 800;
   color: #1e293b;
@@ -187,11 +233,14 @@
   text-align: center;
   font-size: 20px;
   font-weight: 800;
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
   color: #1e293b;
 }
 
-/* ===== Task Card ===== */
+
+/* ================================
+   Task Card
+================================ */
 
 .task-card {
   background-color: #f8fafc;
@@ -208,11 +257,80 @@
   font-weight: 600;
 }
 
-/* ===== Buttons ===== */
+.task-card-meta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.task-date {
+  font-size: 13px;
+  color: #64748b;
+  margin: 8px 0 12px 0;
+}
+
+.task-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+/* ================================
+   Priority Badge
+================================ */
+
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.priority-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.priority-high {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.priority-high .priority-dot {
+  background-color: #dc2626;
+}
+
+.priority-medium {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.priority-medium .priority-dot {
+  background-color: #d97706;
+}
+
+.priority-low {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.priority-low .priority-dot {
+  background-color: #16a34a;
+}
+
+
+/* ================================
+   Buttons
+================================ */
 
 .btn-primary {
   background-color: #2563eb;
-  color: white;
+  color: #ffffff;
   border: none;
   border-radius: 8px;
   padding: 7px 14px;
@@ -242,7 +360,7 @@
 
 .btn-danger {
   background-color: #ef4444;
-  color: white;
+  color: #ffffff;
   border: none;
   border-radius: 8px;
   padding: 7px 14px;

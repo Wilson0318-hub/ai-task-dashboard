@@ -3,11 +3,14 @@ import KanbanBoard from "../components/KanbanBoard";
 import TaskInput from "../components/TaskInput";
 import { useState } from "react";
 import "../styles/Board.css";
-import useLocalStorage
-from "../hooks/useLocalStorage";
+import useLocalStorage from "../hooks/useLocalStorage";
 import AIAssistantPanel from "../components/AIAssistantPanel";
 
 function Board() {
+
+  const [priority, setPriority] = useState("medium");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const [recurringTasks] = useState([
   {
@@ -28,7 +31,9 @@ function Board() {
     const newTask = {
       id: Date.now(),
       text: text,
-      status: "todo"
+      status: "todo",
+      startDate: "",
+      endDate: ""
     };
 
     setTasks([
@@ -51,10 +56,13 @@ function Board() {
       return;
     }
 
-    const newTask ={
+    const newTask = {
       id: Date.now(),
       text: taskText,
-      status: "todo"
+      status: "todo",
+      priority,
+      startDate,
+      endDate
     };
 
     setTasks([
@@ -63,6 +71,9 @@ function Board() {
     ]);
 
     setTaskText("");
+    setPriority("medium");
+    setStartDate("");
+    setEndDate("");
 
 
   };
@@ -102,7 +113,7 @@ function Board() {
     );
 
     setTasks(updateTasks);
-  }
+  };
 
   const editTask = (taskId) =>{
     const newText = prompt("請輸入新的任務");
@@ -136,6 +147,12 @@ function Board() {
           <TaskInput
             taskText={taskText}
             setTaskText={setTaskText}
+            priority={priority}
+            setPriority={setPriority}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
             addTask={addTask}
           />
 
@@ -144,10 +161,11 @@ function Board() {
           />
         </div>
         <KanbanBoard
-          tasks = {tasks}
+          tasks={tasks}
           moveTask={moveTask}
           deleteTask={deleteTask}
-          editTask={editTask} />
+          editTask={editTask} 
+        />
       </div>
     </div>
   );
