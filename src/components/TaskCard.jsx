@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import getTaskDateStatus from "../utils/getTaskDateStatus";
 function TaskCard({
   task,
   moveTask,
@@ -33,6 +33,7 @@ function TaskCard({
   };
 
   const taskPriority = task.priority || "medium";
+  const dateStatus = getTaskDateStatus(task); 
 
   const saveEdit = () =>{
     if(editText.trim() === "") {
@@ -126,6 +127,12 @@ function TaskCard({
         <p className="task-date">
           日期：{task.startDate || "未設定"} ~ {task.endDate || "未設定"}
         </p>
+      )}
+
+      {dateStatus && (
+        <span className={`date-status ${dateStatus.className}`}>
+          {dateStatus.label}
+        </span>
       )}
 
       <div className="task-card-actions">
