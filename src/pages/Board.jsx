@@ -27,13 +27,28 @@ function Board() {
   }
   ]);
 
+  const getTodayDate = () =>{
+      const today = new Date();
+
+      const year = today.getFullYear();
+      
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+
+      const day = String(today.getDate()).padStart(2, "0");
+
+      return `${year}-${month}-${day}`;
+  };
+
   const addRecurringTask = (text) => {
+
+    const today = getTodayDate();
+    
     const newTask = {
       id: Date.now(),
       text: text,
       status: "todo",
-      startDate: "",
-      endDate: ""
+      startDate: today,
+      endDate: "today"
     };
 
     setTasks([
