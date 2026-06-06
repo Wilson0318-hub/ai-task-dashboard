@@ -371,3 +371,23 @@
 .btn-danger:hover {
   background-color: #dc2626;
 }
+
+.edit-input,
+.edit-select,
+.edit-date {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #1e293b;
+  outline: none;
+}
+
+.edit-input:focus,
+.edit-select:focus,
+.edit-date:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}

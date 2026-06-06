@@ -47,8 +47,9 @@ function Board() {
       id: Date.now(),
       text: text,
       status: "todo",
+      priority: "medium",
       startDate: today,
-      endDate: "today"
+      endDate: ""
     };
 
     setTasks([
@@ -130,21 +131,15 @@ function Board() {
     setTasks(updateTasks);
   };
 
-  const editTask = (taskId) =>{
-    const newText = prompt("請輸入新的任務");
-
-    if(newText === null || newText.trim() === ""){
-      return;
-    }
-
+  const editTask = (taskId, updateData) =>{
     const updateTasks = tasks.map(task => {
-      if(task.id !== taskId){
+      if( task.id !== taskId){
         return task;
       }
 
       return{
         ...task,
-        text :newText
+        ...updateData
       };
     });
 

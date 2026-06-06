@@ -1,9 +1,25 @@
+import { useState } from "react";
+
 function TaskCard({
   task,
   moveTask,
   deleteTask,
   editTask
 }) {
+
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [editText, setEditText] = useState(task.text);
+  const [editPriority, setEditPriority] = useState(
+    task.priority || "medium"
+  );
+  const [editStartDate, setEditStartDate] = useState(
+    task.startDate || ""
+  );
+  const [editEndDate, setEditEndDate] = useState(
+    task.endDate || ""
+  );
+
   const priorityLabel = {
     high: "高",
     medium: "中",
@@ -17,6 +33,83 @@ function TaskCard({
   };
 
   const taskPriority = task.priority || "medium";
+
+  const saveEdit = () =>{
+    if(editText.trim() === "") {
+      alert("任務名稱不能為空");
+      return;
+    }
+
+    editTask(task.id,{
+      text: editText,
+      priority: editPriority,
+      startDate: editStartDate,
+      endDate: editEndDate
+    });
+
+    setIsEditing(false);
+  };
+
+  const cancelEdit = () =>{
+    setEditText(task.text);
+    setEditPriority(task.priority || "medium");
+    setEditStartDate(task.startDate || "");
+    setEditEndDate(task.endDate || "");
+    setIsEditing(false);
+  };
+
+  if (isEditing){
+    return (
+      <div className="task-card">
+        <input
+          className="edit-input"
+          type="text"
+          value={editText}
+          onChange={(e) => setEditText(e.target.value)}
+        />
+
+        <select
+          className="edit-select"
+          value={editPriority}
+          onChange={(e) => setEditPriority(e.target.value)}
+        >
+          <option value="high">高</option>
+          <option value="medium">中</option>
+          <option value="low">低</option>
+        </select>
+
+        <input
+          className="edit-date"
+          type="date"
+          value={editStartDate}
+          onChange={(e) => setEditStartDate(e.target.value)}
+        />
+
+        <input
+          className="edit-date"
+          type="date"
+          value={editEndDate}
+          onChange={(e) => setEditEndDate(e.target.value)}
+        />
+
+        <div className="task-card-actions">
+          <button
+            className="btn-primary"
+            onClick={saveEdit}
+          >
+            儲存
+          </button>
+
+          <button
+            className="btn-secondary"
+            onClick={cancelEdit}
+          >
+            取消
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="task-card">
@@ -47,7 +140,7 @@ function TaskCard({
 
         <button
           className="btn-secondary"
-          onClick={() => editTask(task.id)}
+          onClick={() => setIsEditing(true)}
         >
           編輯
         </button>
