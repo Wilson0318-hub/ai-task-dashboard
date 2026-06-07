@@ -1,0 +1,32 @@
+.kanban-title {
+  text-align: left;
+  margin: 0 0 18px 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.kanban-container {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
+
+.column {
+  flex: 1;
+  min-width: 260px;
+  min-height: 500px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.column-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 20px 0;
+  color: #1e293b;
+}

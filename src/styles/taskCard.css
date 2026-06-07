@@ -1,0 +1,130 @@
+.task-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  text-align: left;
+}
+
+.task-card-title {
+  margin: 0 0 12px 0;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.task-card-meta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.task-date {
+  font-size: 13px;
+  color: #64748b;
+  margin: 8px 0 12px 0;
+}
+
+.task-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Edit Mode */
+
+.edit-input,
+.edit-select,
+.edit-date {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #1e293b;
+  outline: none;
+}
+
+.edit-input:focus,
+.edit-select:focus,
+.edit-date:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Priority Badge */
+
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.priority-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.priority-high {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.priority-high .priority-dot {
+  background-color: #dc2626;
+}
+
+.priority-medium {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.priority-medium .priority-dot {
+  background-color: #d97706;
+}
+
+.priority-low {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.priority-low .priority-dot {
+  background-color: #16a34a;
+}
+
+/* Date Status Badge */
+
+.date-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.date-danger {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.date-today {
+  background-color: #ffedd5;
+  color: #ea580c;
+}
+
+.date-warning {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.date-normal {
+  background-color: #dbeafe;
+  color: #2563eb;
+}

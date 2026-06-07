@@ -1,0 +1,44 @@
+.ai-panel {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.ai-panel h3 {
+  margin: 0 0 16px 0;
+  color: #1e293b;
+}
+
+.ai-stats {
+  background-color: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.ai-stats p {
+  margin: 6px 0;
+}
+
+.ai-section {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 14px;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+.ai-section h4 {
+  margin: 0 0 8px 0;
+  color: #1e293b;
+}
+
+.ai-section p {
+  margin: 0;
+  color: #475569;
+}

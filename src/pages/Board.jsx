@@ -2,7 +2,6 @@ import Sidebar from "../components/Sidebar";
 import KanbanBoard from "../components/KanbanBoard";
 import TaskInput from "../components/TaskInput";
 import { useState } from "react";
-import "../styles/Board.css";
 import useLocalStorage from "../hooks/useLocalStorage";
 import AIAssistantPanel from "../components/AIAssistantPanel";
 
@@ -12,20 +11,11 @@ function Board() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  const [recurringTasks] = useState([
-  {
-    id: 1,
-    text: "每天健身"
-  },
-  {
-    id: 2,
-    text: "每週專題會議"
-  },
-  {
-    id: 3,
-    text: "每月繳房租"
-  }
-  ]);
+  const [recurringTasks, setRecurringTasks] =
+    useLocalStorage(
+      "recurringTasks",
+      []
+    );
 
   const getTodayDate = () =>{
       const today = new Date();
@@ -39,24 +29,55 @@ function Board() {
       return `${year}-${month}-${day}`;
   };
 
-  const addRecurringTask = (text) => {
+  const addRecurringTask = (text, repeatType) => {
+    if(text.trim()===""){
+      alert("請輸入重複任務內容");
+      return;
+    }
 
-    const today = getTodayDate();
-    
-    const newTask = {
-      id: Date.now(),
-      text: text,
-      status: "todo",
-      priority: "medium",
-      startDate: today,
-      endDate: ""
+    const newRecurringTask = {
+      id:Date.now(),
+      text,
+      repeatType,
+      isDoneToday:false,
+      completedDates: []
     };
 
-    setTasks([
-      ...tasks,
-      newTask
+    setRecurringTasks([
+      ...recurringTasks,
+      newRecurringTask
     ]);
   };
+
+  const toggleRecurringTask = (taskId) =>{
+    const today =getTodayDate();
+
+    const updatedTasks = recurringTasks.map(task =>{
+      if(task.id !== taskId){
+        return task;
+      }
+
+      const alreadyDone = task.completedDates.includes(today);
+
+      return {
+        ... task,
+        isDoneToday: !alreadyDone,
+        completedDates :alreadyDone
+        ? task.completedDates.filter(date => date !== today)
+        : [...task.completedDates, today]
+      };
+    });
+
+    setRecurringTasks(updatedTasks);
+  }
+
+  const deleteRecurringTask = (taskId) => {
+    const updatedTasks =recurringTasks.filter(
+      task => task.id !== taskId
+    );
+
+    setRecurringTasks(updatedTasks)
+  }
 
   const [taskText, setTaskText] = useState ("");
   const [tasks, setTasks] = 
@@ -150,6 +171,8 @@ function Board() {
       <Sidebar 
         recurringTasks={recurringTasks}
         addRecurringTask={addRecurringTask}
+        toggleRecurringTask={toggleRecurringTask}
+        deleteRecurringTask={deleteRecurringTask}
         />
 
       <div className="main-content">

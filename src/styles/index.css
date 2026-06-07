@@ -1,0 +1,9 @@
+@import "./global.css";
+@import "./layout.css";
+@import "./navbar.css";
+@import "./sidebar.css";
+@import "./taskInput.css";
+@import "./aiPanel.css";
+@import "./kanban.css";
+@import "./taskCard.css";
+@import "./buttons.css";
