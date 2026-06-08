@@ -1,4 +1,10 @@
-import { DndContext } from "@dnd-kit/core";
+import {
+  DndContext,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors
+} from "@dnd-kit/core";
 
 import KanbanColumn from "./KanbanColumn";
 
@@ -22,6 +28,20 @@ function KanbanBoard({
     tasks.filter(
       task => task.status === "done"
     );
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8
+      }
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5
+      }
+    })
+  );
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
@@ -47,7 +67,9 @@ function KanbanBoard({
     <div>
       <h2 className="kanban-title">Kanban Board</h2>
 
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext 
+        sensors={sensors}
+        onDragEnd={handleDragEnd}>
         <div className="kanban-container">
           <KanbanColumn
             id="todo"
