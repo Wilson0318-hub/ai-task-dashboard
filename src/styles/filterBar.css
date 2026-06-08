@@ -1,0 +1,26 @@
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.filter-select {
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #1e293b;
+  font-weight: 600;
+  outline: none;
+}
+
+.filter-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}

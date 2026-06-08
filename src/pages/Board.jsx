@@ -1,6 +1,8 @@
 import Sidebar from "../components/Sidebar";
 import KanbanBoard from "../components/KanbanBoard";
 import TaskInput from "../components/TaskInput";
+import FilterBar from "../components/FilterBar";
+import getFilteredTasks from "../utils/getFilteredTasks";
 import { useState } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import AIAssistantPanel from "../components/AIAssistantPanel";
@@ -11,6 +13,24 @@ function Board() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
+  const [priorityFilter, setPriorityFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState("all");
+  const [sortType, setSortType] = useState("default");
+
+  const [taskText, setTaskText] = useState ("");
+  const [tasks, setTasks] = 
+    useLocalStorage(
+      "tasks",
+      []
+    );
+  
+  const filteredTasks = getFilteredTasks(
+    tasks,
+    priorityFilter,
+    dateFilter,
+    sortType
+    );
+  
   const [recurringTasks, setRecurringTasks] =
     useLocalStorage(
       "recurringTasks",
@@ -76,15 +96,10 @@ function Board() {
       task => task.id !== taskId
     );
 
-    setRecurringTasks(updatedTasks)
+    setRecurringTasks(updatedTasks);
   }
 
-  const [taskText, setTaskText] = useState ("");
-  const [tasks, setTasks] = 
-    useLocalStorage(
-      "tasks",
-      []
-    );
+
 
   const addTask = () =>{
 
@@ -193,8 +208,19 @@ function Board() {
             tasks={tasks}
           />
         </div>
+
+        <FilterBar
+          priorityFilter={priorityFilter}
+          setPriorityFilter={setPriorityFilter}
+          dateFilter={dateFilter}
+          setDateFilter={setDateFilter}
+          sortType={sortType}
+          setSortType={setSortType}
+        />
+
+
         <KanbanBoard
-          tasks={tasks}
+          tasks={filteredTasks}
           moveTask={moveTask}
           deleteTask={deleteTask}
           editTask={editTask} 
