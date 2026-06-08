@@ -128,3 +128,28 @@
   background-color: #dbeafe;
   color: #2563eb;
 }
+
+.task-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.task-drag-handle {
+  cursor: grab;
+  color: #94a3b8;
+  font-weight: 700;
+  user-select: none;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.task-drag-handle:hover {
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+.task-drag-handle:active {
+  cursor: grabbing;
+}

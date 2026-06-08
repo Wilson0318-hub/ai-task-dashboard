@@ -1,3 +1,5 @@
+import { useDraggable } from "@dnd-kit/core";
+
 import { useState } from "react";
 import getTaskDateStatus from "../utils/getTaskDateStatus";
 function TaskCard({
@@ -6,6 +8,21 @@ function TaskCard({
   deleteTask,
   editTask
 }) {
+
+  const{
+    attributes,
+    listeners,
+    setNodeRef,
+    transform
+  } = useDraggable({
+    id: task.id
+  });
+
+  const dragStyle = transform
+  ?{
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`
+  }
+  : undefined;
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -113,8 +130,25 @@ function TaskCard({
   }
 
   return (
-    <div className="task-card">
-      <p className="task-card-title">{task.text}</p>
+    <div 
+      ref={setNodeRef}
+      style={dragStyle}
+      className="task-card"
+      >
+
+      <div className="task-card-header">
+        <p className="task-card-title">
+          {task.text}
+        </p>
+
+        <div
+          className="task-drag-handle"
+          {...listeners}
+          {...attributes}
+        >
+          ⠿
+        </div>
+      </div>
 
       <div className="task-card-meta">
         <span className={`priority-badge ${priorityClass[taskPriority]}`}>

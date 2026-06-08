@@ -99,8 +99,6 @@ function Board() {
     setRecurringTasks(updatedTasks);
   }
 
-
-
   const addTask = () =>{
 
     if(taskText.trim() === ""){
@@ -181,6 +179,21 @@ function Board() {
 
     setTasks(updateTasks);
   };
+
+  const updateTaskStatus = (taskId, newStatus) => {
+    const updatedTasks = tasks.map(task => {
+      if (task.id !== taskId) {
+        return task;
+      }
+
+      return {
+        ...task,
+        status: newStatus
+      };
+    });
+
+    setTasks(updatedTasks);
+  }
   return (
     <div className="board-layout">
       <Sidebar 
@@ -222,6 +235,7 @@ function Board() {
         <KanbanBoard
           tasks={filteredTasks}
           moveTask={moveTask}
+          updateTaskStatus ={updateTaskStatus}
           deleteTask={deleteTask}
           editTask={editTask} 
         />
