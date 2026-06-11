@@ -10,8 +10,8 @@ function Sidebar({
   const [recurringText, setRecurringText] = useState("");
   const [repeatType, setRepeatType] = useState("daily");
 
-  const handleAddRecurringTask = () => {
-    addRecurringTask(recurringText,repeatType);
+  const handleAddRecurringTask = async() => {
+    await addRecurringTask(recurringText,repeatType);
     setRecurringText("");
     setRepeatType("daily");
   };
@@ -56,7 +56,7 @@ return (
         <div
           key={task.id}
           className={
-            task.isDoneToday
+            task.isDoneToday === 1
               ? "recurring-item recurring-item-done"
               : "recurring-item"
           }
@@ -65,7 +65,7 @@ return (
             <label className="recurring-checkbox-label">
               <input
                 type="checkbox"
-                checked={task.isDoneToday}
+                checked={task.isDoneToday === 1}
                 onChange={() => toggleRecurringTask(task.id)}
               />
 

@@ -4,12 +4,20 @@ import TaskInput from "../components/TaskInput";
 import FilterBar from "../components/FilterBar";
 import getFilteredTasks from "../utils/getFilteredTasks";
 import { useEffect, useState } from "react";
+
 import { 
   getTasks,
   createTask,
   updateTask,
   deleteTaskApi
 } from "../api/taskApi";
+import {
+  getRecurringTasks,
+  createRecurringTask,
+  toggleRecurringTaskApi,
+  deleteRecurringTaskApi
+} from "../api/recurringTaskApi";
+
 import useLocalStorage from "../hooks/useLocalStorage";
 import AIAssistantPanel from "../components/AIAssistantPanel";
 
@@ -25,6 +33,7 @@ function Board() {
 
   const [taskText, setTaskText] = useState ("");
   const [tasks, setTasks] = useState([]);
+  const [recurringTasks, setRecurringTasks] = useState([]);
 
   const fetchTasks = async() => {
     try{
@@ -35,8 +44,18 @@ function Board() {
     }
   }
 
+  const fetchRecurringTasks = async()=>{
+    try {
+      const data = await getRecurringTasks();
+      setRecurringTasks(data);
+    }catch(error){
+      console.error("Fetch recurring tasks error:", error);
+    }
+  };
+
   useEffect(() =>{
     fetchTasks();
+    fetchRecurringTasks();
   },[]);
 
   const filteredTasks = getFilteredTasks(
@@ -46,73 +65,48 @@ function Board() {
     sortType
     );
   
-  const [recurringTasks, setRecurringTasks] =
-    useLocalStorage(
-      "recurringTasks",
-      []
-    );
+ 
 
-  const getTodayDate = () =>{
-      const today = new Date();
-
-      const year = today.getFullYear();
-      
-      const month = String(today.getMonth() + 1).padStart(2, "0");
-
-      const day = String(today.getDate()).padStart(2, "0");
-
-      return `${year}-${month}-${day}`;
-  };
-
-  const addRecurringTask = (text, repeatType) => {
+  const addRecurringTask = async (text, repeatType) => {
     if(text.trim()===""){
       alert("請輸入重複任務內容");
       return;
     }
 
     const newRecurringTask = {
-      id:Date.now(),
       text,
       repeatType,
-      isDoneToday:false,
-      completedDates: []
+      isDoneToday: 0
     };
 
-    setRecurringTasks([
-      ...recurringTasks,
-      newRecurringTask
-    ]);
+    try{
+      await createRecurringTask(newRecurringTask);
+      await fetchRecurringTasks();
+    }catch(error) {
+      console.error("create recurring task error:",error);
+      alert("新增重複任務失敗");
+    }
   };
 
-  const toggleRecurringTask = (taskId) =>{
-    const today =getTodayDate();
-
-    const updatedTasks = recurringTasks.map(task =>{
-      if(task.id !== taskId){
-        return task;
-      }
-
-      const alreadyDone = task.completedDates.includes(today);
-
-      return {
-        ... task,
-        isDoneToday: !alreadyDone,
-        completedDates :alreadyDone
-        ? task.completedDates.filter(date => date !== today)
-        : [...task.completedDates, today]
-      };
-    });
-
-    setRecurringTasks(updatedTasks);
+  const toggleRecurringTask = async (taskId) =>{
+    try {
+      await toggleRecurringTaskApi(taskId);
+      await fetchRecurringTasks();
+    } catch (error) {
+      console.error("Toggle recurring task error:", error);
+      alert("更新重複任務狀態失敗");
+    }
+  };
+  
+  const deleteRecurringTask = async (taskId) => {
+    try{
+    await deleteRecurringTaskApi(taskId);
+    await fetchRecurringTasks();
+  } catch(error){
+    console("Delete recurring task error:", error);
+    alert("刪除重複任務失敗");
   }
-
-  const deleteRecurringTask = (taskId) => {
-    const updatedTasks =recurringTasks.filter(
-      task => task.id !== taskId
-    );
-
-    setRecurringTasks(updatedTasks);
-  }
+};
 
   const addTask = async () =>{
 

@@ -20,3 +20,17 @@ class TaskResponse(TaskBase):
 
     class Config:
         from_attributes = True
+
+class RecurringTaskBase(BaseModel):
+    text: str
+    repeatType: str = "daily"
+    isDoneToday: int =0
+
+class RecurringTaskCreate(RecurringTaskBase):
+    pass
+
+class RecurringTaskResponse(RecurringTaskBase):
+    id: int
+
+    class config:
+        from_attributes = True
