@@ -3,7 +3,13 @@ import KanbanBoard from "../components/KanbanBoard";
 import TaskInput from "../components/TaskInput";
 import FilterBar from "../components/FilterBar";
 import getFilteredTasks from "../utils/getFilteredTasks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { 
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTaskApi
+} from "../api/taskApi";
 import useLocalStorage from "../hooks/useLocalStorage";
 import AIAssistantPanel from "../components/AIAssistantPanel";
 
@@ -18,12 +24,21 @@ function Board() {
   const [sortType, setSortType] = useState("default");
 
   const [taskText, setTaskText] = useState ("");
-  const [tasks, setTasks] = 
-    useLocalStorage(
-      "tasks",
-      []
-    );
-  
+  const [tasks, setTasks] = useState([]);
+
+  const fetchTasks = async() => {
+    try{
+      const data = await getTasks();
+      setTasks(data);
+    }catch(error){
+      console.error("Fetch tasks error:", error);
+    }
+  }
+
+  useEffect(() =>{
+    fetchTasks();
+  },[]);
+
   const filteredTasks = getFilteredTasks(
     tasks,
     priorityFilter,
@@ -99,7 +114,7 @@ function Board() {
     setRecurringTasks(updatedTasks);
   }
 
-  const addTask = () =>{
+  const addTask = async () =>{
 
     if(taskText.trim() === ""){
       alert("請輸入內容");
@@ -107,7 +122,6 @@ function Board() {
     }
 
     const newTask = {
-      id: Date.now(),
       text: taskText,
       status: "todo",
       priority,
@@ -115,85 +129,109 @@ function Board() {
       endDate
     };
 
-    setTasks([
-      ...tasks,
-      newTask
-    ]);
+    try{
 
-    setTaskText("");
-    setPriority("medium");
-    setStartDate("");
-    setEndDate("");
+      console.log("newTask:", newTask);
+      await createTask(newTask);
+      await fetchTasks();
 
-
+      setTaskText("");
+      setPriority("medium");
+      setStartDate("");
+      setEndDate("");
+    }catch(error){
+      console.error("Create task error:", error);
+      alert("新增任務失敗");
+    }
   };
 
-  const moveTask = (taskId) =>{
+  const moveTask = async (taskId) =>{
     
-    const updateTasks = tasks.map(task =>{
+    const oldTask = tasks.find(task=> task.id === taskId);
 
-      if(task.id !==taskId){
-        return task;
-      }
+    if (!oldTask){
+      return;
+    }
 
-      if(task.status === "todo"){
-        return{
-          ...task,
-          status: "doing"
-        };
-      }
+    let newStatus = oldTask.status;
 
-      if(task.status === "doing"){
-        return{
-          ...task,
-          status: "done"
-        };
-      }
+    if (oldTask.status === "todo"){
+      newStatus ="doing";
+    }
 
-      return task;
+    if(oldTask.status ==="doing"){
+      newStatus ="done";
+    }
 
-    });
+    if(oldTask.status ==="done"){
+      return;
+    }
 
-    setTasks(updateTasks);
+    const updatedTask = {
+      ...oldTask,
+      status: newStatus
+    };
+
+    try{
+      await updateTask(taskId, updatedTask);
+      await fetchTasks();
+    } catch(error){
+      console.error("Move task error:", error);
+      alert("移動任務失敗");
+    }
   };
 
-  const deleteTask = (taskId) =>{
-    const updateTasks = tasks.filter(
-      task => task.id !== taskId
-    );
-
-    setTasks(updateTasks);
+  const deleteTask = async (taskId) =>{
+    try{
+      await deleteTaskApi(taskId);
+      await fetchTasks();
+    }catch(error){
+      console.error("Delete task error:" , error);
+      alert("刪除任務失敗");
+    }
   };
 
-  const editTask = (taskId, updateData) =>{
-    const updateTasks = tasks.map(task => {
-      if( task.id !== taskId){
-        return task;
-      }
+  const editTask = async (taskId, updateData) =>{
+    const oldTask = tasks.find(task => task.id ===taskId);
 
-      return{
-        ...task,
-        ...updateData
-      };
-    });
+    if(!oldTask){
+      return;
+    }
 
-    setTasks(updateTasks);
+    const updatedTask ={
+      ...oldTask,
+      ...updateData
+    };
+
+    try{
+      await updateTask(taskId,updatedTask);
+      await fetchTasks();
+    } catch(error){
+      console.error("Edit task error:", error);
+      alert("編輯任務失敗");
+    }
   };
 
-  const updateTaskStatus = (taskId, newStatus) => {
-    const updatedTasks = tasks.map(task => {
-      if (task.id !== taskId) {
-        return task;
-      }
+  const updateTaskStatus = async (taskId, newStatus) => {
+    const oldTask = tasks.find(task => task.id ===taskId);
 
-      return {
-        ...task,
-        status: newStatus
-      };
-    });
+    if(!oldTask){
+      return;
+    }
 
-    setTasks(updatedTasks);
-  }
+    const updatedTask = {
+      ...oldTask,
+      status: newStatus
+    };
+
+    try{
+      await updateTask(taskId, updatedTask);
+      await fetchTasks();
+    }catch(error){
+      console.error("update task status error:", error);
+      alert("更新任務狀態失敗");
+    }
+  };
   return (
     <div className="board-layout">
       <Sidebar 

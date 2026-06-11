@@ -52,13 +52,13 @@ function TaskCard({
   const taskPriority = task.priority || "medium";
   const dateStatus = getTaskDateStatus(task); 
 
-  const saveEdit = () =>{
+  const saveEdit = async () =>{
     if(editText.trim() === "") {
       alert("任務名稱不能為空");
       return;
     }
 
-    editTask(task.id,{
+    await editTask(task.id,{
       text: editText,
       priority: editPriority,
       startDate: editStartDate,
