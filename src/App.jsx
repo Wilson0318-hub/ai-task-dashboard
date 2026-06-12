@@ -1,31 +1,18 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Link
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Board from "./pages/Board";
+import Analytics from "./pages/Analytics";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <BrowserRouter>
-
-      <nav className="navbar">
-        <Link className="nav-link" to="/board">
-          AI Task Dashboard
-        </Link>
-      </nav>
+      <Navbar />
 
       <Routes>
-
-        <Route
-          path="/board"
-          element={<Board />}
-        />
-
+        <Route path="/" element={<Board />} />
+        <Route path="/analytics" element={<Analytics />} />
       </Routes>
-
     </BrowserRouter>
   );
 }

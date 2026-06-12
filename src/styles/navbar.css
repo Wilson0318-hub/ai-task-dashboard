@@ -1,15 +1,33 @@
 .navbar {
   height: 56px;
-  padding: 0 32px;
+  padding: 0 24px;
   display: flex;
   align-items: center;
-  background-color: #ffffff;
+  justify-content: space-between;
+  background-color: white;
   border-bottom: 1px solid #e2e8f0;
 }
 
-.nav-link {
+.nav-brand {
+  font-size: 16px;
+  font-weight: 800;
   color: #2563eb;
   text-decoration: none;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nav-link {
+  font-size: 14px;
   font-weight: 700;
-  font-size: 16px;
+  color: #334155;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: #2563eb;
 }

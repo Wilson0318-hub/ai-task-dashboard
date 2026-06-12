@@ -1,0 +1,363 @@
+.analytics-page {
+  min-height: calc(100vh - 56px);
+  padding: 28px;
+  background-color: #f8fafc;
+}
+
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.analytics-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.analytics-subtitle {
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 15px;
+}
+
+.week-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.week-button {
+  border: none;
+  background-color: #2563eb;
+  color: white;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.week-button:hover {
+  background-color: #1d4ed8;
+}
+
+.schedule-section {
+  background-color: white;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.section-title {
+  margin: 0 0 18px;
+  font-size: 22px;
+  color: #0f172a;
+}
+
+.weekly-schedule {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 14px;
+}
+
+.schedule-day {
+  min-height: 260px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background-color: #f8fafc;
+  padding: 12px;
+}
+
+.schedule-day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.schedule-weekday {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.schedule-date {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.schedule-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.empty-schedule-text {
+  color: #94a3b8;
+  font-size: 13px;
+  margin: 0;
+}
+
+.schedule-task {
+  background-color: white;
+  border-radius: 12px;
+  padding: 10px;
+  border-left: 5px solid #94a3b8;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+.schedule-task-high {
+  border-left-color: #ef4444;
+}
+
+.schedule-task-medium {
+  border-left-color: #f59e0b;
+}
+
+.schedule-task-low {
+  border-left-color: #22c55e;
+}
+
+.schedule-task-title {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.schedule-task-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.schedule-priority,
+.schedule-status {
+  background-color: #e2e8f0;
+  color: #334155;
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.week-range {
+  margin: -10px 0 18px;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.gantt-chart {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.gantt-header {
+  display: grid;
+  grid-template-columns: 220px repeat(7, 1fr);
+  min-width: 900px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.gantt-task-label {
+  font-weight: 800;
+  color: #0f172a;
+  padding: 10px;
+}
+
+.gantt-date-cell {
+  text-align: center;
+  padding: 10px 6px;
+  border-left: 1px solid #e2e8f0;
+}
+
+.gantt-weekday {
+  display: block;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.gantt-date {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.gantt-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 900px;
+}
+
+.gantt-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  align-items: center;
+  min-height: 70px;
+}
+
+.gantt-task-name {
+  padding: 10px;
+  border-right: 1px solid #e2e8f0;
+}
+
+.gantt-task-name p {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.gantt-task-meta {
+  display: flex;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.gantt-task-meta span {
+  background-color: #e2e8f0;
+  color: #334155;
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.gantt-timeline {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  min-height: 44px;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  background-image: linear-gradient(
+    to right,
+    #f1f5f9 1px,
+    transparent 1px
+  );
+  background-size: calc(100% / 7) 100%;
+}
+
+.gantt-bar {
+  height: 30px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 800;
+  color: white;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.gantt-bar-high {
+  background-color: #ef4444;
+}
+
+.gantt-bar-medium {
+  background-color: #f59e0b;
+}
+
+.gantt-bar-low {
+  background-color: #22c55e;
+}
+
+.gantt-header {
+  grid-template-columns: 220px repeat(7, 1fr);
+}
+
+.gantt-row {
+  grid-template-columns: 220px 1fr;
+  min-height: 70px;
+}
+
+.gantt-bar {
+  height: 32px;
+}
+
+.gantt-timeline {
+  background-image: linear-gradient(
+    to right,
+    #f1f5f9 1px,
+    transparent 1px
+  );
+}
+
+.gantt-task-name p {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.gantt-task-meta {
+  display: flex;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.gantt-bar {
+  height: 34px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 800;
+  color: white;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.gantt-weekday {
+  display: block;
+  font-size: 14px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.gantt-date {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+@media (max-width: 768px) {
+  .analytics-page {
+    padding: 16px;
+  }
+
+  .analytics-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .week-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .week-button {
+    flex: 1;
+  }
+
+  .schedule-section {
+    padding: 16px;
+  }
+
+  .gantt-header,
+  .gantt-body {
+    min-width: 900px;
+  }
+}
