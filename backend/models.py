@@ -18,3 +18,10 @@ class RecurringTask(Base):
     text = Column( String, nullable=False)
     repeatType = Column(String, default="daily")
     isDoneToday = Column(Integer, default=0)
+
+class RecurringTaskCompletion(Base):
+    __tablename__ = "recurring_task_completions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    recurringTaskId = Column(Integer, nullable=False)
+    completedDate=Column(String, nullable=False)

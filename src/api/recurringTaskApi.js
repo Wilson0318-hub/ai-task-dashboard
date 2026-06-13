@@ -65,3 +65,17 @@ export async function deleteRecurringTaskApi(recurringTaskId) {
 
   return response.json();
 }
+
+export async function getRecurringTaskCompletions() {
+  const response = await fetch(
+    `${API_BASE_URL}/recurring-tasks/completions/all`
+  );
+
+  if(!response.ok){
+    const errorText = await response.text();
+    console.error("Fetch recurring completions failed:", errorText);
+    throw new Error("Failed to fetch recurring task completions");
+  }
+
+  return response.json()
+}

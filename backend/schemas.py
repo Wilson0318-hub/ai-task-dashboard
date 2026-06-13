@@ -34,3 +34,16 @@ class RecurringTaskResponse(RecurringTaskBase):
 
     class config:
         from_attributes = True
+
+class RecurringTaskCompletionBase(BaseModel):
+    recurringTaskId : int 
+    completedDate : str
+
+class RecurringTaskCompletionCreate(RecurringTaskCompletionBase):
+    pass
+
+class RecurringTaskCompletionResponse(RecurringTaskCompletionBase):
+    id : int 
+
+    class Config:
+        from_attributes = True

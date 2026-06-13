@@ -3,9 +3,16 @@ import { useEffect, useState } from "react";
 import { getTasks } from "../api/taskApi";
 import getWeekDays from "../utils/getWeekDays";
 import getTaskGanttPosition from "../utils/getTaskGanttPosition";
+import {
+  getRecurringTasks,
+  getRecurringTaskCompletions
+} from "../api/recurringTaskApi";
 
+import getRecurringProgress from "../utils/getRecurringProgress";
 function Analytics() {
   const [tasks, setTasks] = useState([]);
+  const [recurringTasks, setRecurringTasks] = useState([]);
+  const [recurringCompletions, setRecurringCompletions] = useState([]);
   const [currentWeekBaseDate, setCurrentWeekBaseDate] = useState(new Date());
 
   const weekDays = getWeekDays(currentWeekBaseDate);
@@ -22,10 +29,27 @@ function Analytics() {
     }
   };
 
+  const fetchRecurringData = async () => {
+    try{
+      const recurringTasksData = await getRecurringTasks();
+      const completionsData = await getRecurringTaskCompletions();
+
+      setRecurringTasks(recurringTasksData);
+      setRecurringCompletions(completionsData);
+    }catch (error){
+      console.error("Fetch recurring analytics data error:", error);
+    }
+  };
+
   useEffect(() => {
     fetchTasks();
+    fetchRecurringData();
   }, []);
 
+  const recurringProgress = getRecurringProgress(
+    recurringTasks,
+    recurringCompletions
+  );
   const formatDate = (date) => {
     return date.toLocaleDateString("zh-TW", {
       month: "2-digit",
@@ -166,8 +190,87 @@ function Analytics() {
             </div>
         </div>
         </section>
+                
+
+        <section className="recurring-progress-section">
+          <h2 className="section-title">
+            重複任務進度
+          </h2>
+
+          <div className="progress-card-grid">
+            <div className="progress-card">
+              <p className="progress-label">
+                今日完成率
+              </p>
+
+              <h3 className="progress-value">
+                {recurringProgress.todayRate}%
+              </h3>
+
+              <p className="progress-detail">
+                {recurringProgress.todayCompletedCount} / {recurringProgress.todayTargetCount}
+              </p>
+
+              <div className="progress-bar">
+                <div
+                  className="progress-bar-fill"
+                  style={{
+                    width: `${recurringProgress.todayRate}%`
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="progress-card">
+              <p className="progress-label">
+                本週完成率
+              </p>
+
+              <h3 className="progress-value">
+                {recurringProgress.weekRate}%
+              </h3>
+
+              <p className="progress-detail">
+                {recurringProgress.weekCompletedCount} / {recurringProgress.weekTargetCount}
+              </p>
+
+              <div className="progress-bar">
+                <div
+                  className="progress-bar-fill"
+                  style={{
+                    width: `${recurringProgress.weekRate}%`
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="progress-card">
+              <p className="progress-label">
+                本月完成率
+              </p>
+
+              <h3 className="progress-value">
+                {recurringProgress.monthRate}%
+              </h3>
+
+              <p className="progress-detail">
+                {recurringProgress.monthCompletedCount} / {recurringProgress.monthTargetCount}
+              </p>
+
+              <div className="progress-bar">
+                <div
+                  className="progress-bar-fill"
+                  style={{
+                    width: `${recurringProgress.monthRate}%`
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
     </div>
   );
 }
+
 
 export default Analytics;
