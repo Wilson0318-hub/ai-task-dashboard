@@ -21,6 +21,9 @@ import {
 import useLocalStorage from "../hooks/useLocalStorage";
 import AIAssistantPanel from "../components/AIAssistantPanel";
 
+import LoadingState from "../components/common/LoadingState";
+import ErrorMessage from "../components/common/ErrorMessage";
+
 function Board() {
 
   const [priority, setPriority] = useState("medium");
@@ -35,6 +38,34 @@ function Board() {
   const [tasks, setTasks] = useState([]);
   const [recurringTasks, setRecurringTasks] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const loadBoardData = async () => {
+  try {
+    setIsLoading(true);
+    setErrorMessage("");
+
+    const [
+      tasksData,
+      recurringTasksData
+    ] = await Promise.all([
+      getTasks(),
+      getRecurringTasks()
+    ]);
+
+    setTasks(tasksData);
+    setRecurringTasks(recurringTasksData);
+  } catch (error) {
+    console.error("Load board data error:", error);
+
+    setErrorMessage(
+      "Board 資料載入失敗，請確認後端伺服器是否正常啟動。"
+    );
+  } finally {
+    setIsLoading(false);
+  }
+ };
   const fetchTasks = async() => {
     try{
       const data = await getTasks();
@@ -54,8 +85,7 @@ function Board() {
   };
 
   useEffect(() =>{
-    fetchTasks();
-    fetchRecurringTasks();
+    loadBoardData();
   },[]);
 
   const filteredTasks = getFilteredTasks(
@@ -227,7 +257,17 @@ function Board() {
     }
   };
   return (
-    <div className="board-layout">
+  <div className="board-page">
+    {isLoading ? (
+      <LoadingState message="正在載入 Board 資料..." />
+    ) : errorMessage ? (
+      <ErrorMessage
+        message={errorMessage}
+        onRetry={loadBoardData}
+      />
+    ) : (
+      <>
+        <div className="board-layout">
       <Sidebar 
         recurringTasks={recurringTasks}
         addRecurringTask={addRecurringTask}
@@ -273,7 +313,11 @@ function Board() {
         />
       </div>
     </div>
-  );
+      </>
+    )}
+  </div>
+);
+
 }
 
 export default Board;
