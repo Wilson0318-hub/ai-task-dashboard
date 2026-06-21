@@ -10,7 +10,11 @@ import {
   getRecurringTaskCompletions
 } from "../api/recurringTaskApi";
 
+import TaskSummaryCards from "../components/analytics/TaskSummaryCards";
+import WeeklyGanttChart from "../components/analytics/WeeklyGanttChart";
 import getRecurringProgress from "../utils/getRecurringProgress";
+import RecurringProgressCards from "../components/analytics/RecurringProgressCards";
+
 function Analytics() {
   const [tasks, setTasks] = useState([]);
   const [recurringTasks, setRecurringTasks] = useState([]);
@@ -126,254 +130,22 @@ function Analytics() {
         </div>
       </div>
 
-      <section className="summary-section">
-        <div className="summary-card-grid">
-          <div className="summary-card">
-            <p className="summary-label">
-              總任務
-            </p>
+      <TaskSummaryCards taskSummary={taskSummary} />
 
-            <h3 className="summary-value">
-              {taskSummary.totalTasks}
-            </h3>
-          </div>
-
-          <div className="summary-card">
-            <p className="summary-label">
-              待辦
-            </p>
-
-            <h3 className="summary-value">
-              {taskSummary.todoCount}
-            </h3>
-          </div>
-
-          <div className="summary-card">
-            <p className="summary-label">
-              進行中
-            </p>
-
-            <h3 className="summary-value">
-              {taskSummary.doingCount}
-            </h3>
-          </div>
-
-          <div className="summary-card">
-            <p className="summary-label">
-              已完成
-            </p>
-
-            <h3 className="summary-value">
-              {taskSummary.doneCount}
-            </h3>
-          </div>
-
-          <div className="summary-card summary-card-warning">
-            <p className="summary-label">
-              逾期
-            </p>
-
-            <h3 className="summary-value">
-              {taskSummary.overdueCount}
-            </h3>
-          </div>
-
-          <div className="summary-card summary-card-danger">
-            <p className="summary-label">
-              高優先級
-            </p>
-
-            <h3 className="summary-value">
-              {taskSummary.highPriorityCount}
-            </h3>
-          </div>
-        </div>
-      </section>
-
-      <section className="schedule-section">
-        <h2 className="section-title">
-            本週任務甘特圖
-        </h2>
-
-        <p className="week-range">
-            {formatDate(weekStart)} - {formatDate(weekEnd)}
-        </p>
-        <div className="gantt-chart">
-            <div className="gantt-header">
-            <div className="gantt-task-label">
-                任務
-            </div>
-
-            {weekDays.map(date => (
-                <div
-                key={date.toISOString()}
-                className="gantt-date-cell"
-                >
-                <span className="gantt-weekday">
-                    {getWeekDayLabel(date)}
-                </span>
-
-                <span className="gantt-date">
-                    {formatDate(date)}
-                </span>
-                </div>
-            ))}
-            </div>
-
-            <div className="gantt-body">
-            {visibleGanttTasks.length === 0 ? (
-                <div className="gantt-empty-state">
-                <p className="empty-schedule-title">
-                  本週目前沒有任務
-                </p>
-
-                <p className="gantt-empty-description">
-                  可以回到 Board 新增任務，並設定開始日期與截止日期。
-                </p>
-                </div>
-            ) : (
-                visibleGanttTasks.map(task => {
-                const position = getTaskGanttPosition(task, weekDays);
-
-                if (!position) {
-                    return null;
-                }
-
-                return (
-                    <div
-                    key={task.id}
-                    className="gantt-row"
-                    >
-                    <div className="gantt-task-name">
-                        <p>{task.text}</p>
-
-                        <div className="gantt-task-meta">
-                        <span>{task.priority}</span>
-                        <span>{task.status}</span>
-                        </div>
-                    </div>
-
-                    <div className="gantt-timeline">
-                        <div
-                        className={`gantt-bar gantt-bar-${task.priority}`}
-                        style={{
-                            gridColumn: `${position.startColumn} / ${position.endColumn}`
-                        }}
-                        >
-                        {task.text}
-                        </div>
-                    </div>
-                    </div>
-                );
-                })
-            )}
-            </div>
-        </div>
-        </section>
+      <WeeklyGanttChart
+        weekDays={weekDays}
+        weekStart={weekStart}
+        weekEnd={weekEnd}
+        visibleGanttTasks={visibleGanttTasks}
+        formatDate={formatDate}
+        getWeekDayLabel={getWeekDayLabel}
+      />
                 
 
-        <section className="recurring-progress-section">
-          <div className="section-header-row">
-            <div>
-              <h2 className="section-title">
-                重複任務進度
-              </h2>
-
-              <p className="section-description">
-                根據 daily、weekly、monthly 任務類型計算完成率。
-              </p>
-            </div>
-
-            <div className="repeat-type-summary">
-              <span>Daily：{recurringProgress.dailyCount}</span>
-              <span>Weekly：{recurringProgress.weeklyCount}</span>
-              <span>Monthly：{recurringProgress.monthlyCount}</span>
-            </div>
-          </div>
-
-          {recurringTasks.length === 0 ? (
-            <div className="recurring-empty-state">
-              <p className="gantt-empty-title">
-                尚未建立重複任務
-              </p>
-
-              <p className="gantt-empty-description">
-                可以到 Board 左側新增每日、每週或每月重複任務。
-              </p>
-            </div>
-          ) : (
-            <div className="progress-card-grid">
-              <div className="progress-card">
-                <p className="progress-label">
-                  今日完成率
-                </p>
-
-                <h3 className="progress-value">
-                  {recurringProgress.todayRate}%
-                </h3>
-
-                <p className="progress-detail">
-                  {recurringProgress.todayCompletedCount} / {recurringProgress.todayTargetCount}
-                </p>
-
-                <div className="progress-bar">
-                  <div
-                    className="progress-bar-fill"
-                    style={{
-                      width: `${recurringProgress.todayRate}%`
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="progress-card">
-                <p className="progress-label">
-                  本週完成率
-                </p>
-
-                <h3 className="progress-value">
-                  {recurringProgress.weekRate}%
-                </h3>
-
-                <p className="progress-detail">
-                  {recurringProgress.weekCompletedCount} / {recurringProgress.weekTargetCount}
-                </p>
-
-                <div className="progress-bar">
-                  <div
-                    className="progress-bar-fill"
-                    style={{
-                      width: `${recurringProgress.weekRate}%`
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="progress-card">
-                <p className="progress-label">
-                  本月完成率
-                </p>
-
-                <h3 className="progress-value">
-                  {recurringProgress.monthRate}%
-                </h3>
-
-                <p className="progress-detail">
-                  {recurringProgress.monthCompletedCount} / {recurringProgress.monthTargetCount}
-                </p>
-
-                <div className="progress-bar">
-                  <div
-                    className="progress-bar-fill"
-                    style={{
-                      width: `${recurringProgress.monthRate}%`
-                    }}
-                  />
-                </div>
-              </div>
-    </div>
-  )}
-</section>
+      <RecurringProgressCards
+        recurringTasks={recurringTasks}
+        recurringProgress={recurringProgress}
+      />
     </div>
   );
 }
