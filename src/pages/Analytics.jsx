@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { getTasks } from "../api/taskApi";
 import getWeekDays from "../utils/getWeekDays";
 import getTaskGanttPosition from "../utils/getTaskGanttPosition";
+import getTaskSummary from "../utils/getTaskSummary";
+
 import {
   getRecurringTasks,
   getRecurringTaskCompletions
@@ -50,6 +52,10 @@ function Analytics() {
     recurringTasks,
     recurringCompletions
   );
+
+  const taskSummary = getTaskSummary(tasks);
+
+
   const formatDate = (date) => {
     return date.toLocaleDateString("zh-TW", {
       month: "2-digit",
@@ -115,6 +121,70 @@ function Analytics() {
           </button>
         </div>
       </div>
+
+      <section className="summary-section">
+        <div className="summary-card-grid">
+          <div className="summary-card">
+            <p className="summary-label">
+              總任務
+            </p>
+
+            <h3 className="summary-value">
+              {taskSummary.totalTasks}
+            </h3>
+          </div>
+
+          <div className="summary-card">
+            <p className="summary-label">
+              待辦
+            </p>
+
+            <h3 className="summary-value">
+              {taskSummary.todoCount}
+            </h3>
+          </div>
+
+          <div className="summary-card">
+            <p className="summary-label">
+              進行中
+            </p>
+
+            <h3 className="summary-value">
+              {taskSummary.doingCount}
+            </h3>
+          </div>
+
+          <div className="summary-card">
+            <p className="summary-label">
+              已完成
+            </p>
+
+            <h3 className="summary-value">
+              {taskSummary.doneCount}
+            </h3>
+          </div>
+
+          <div className="summary-card summary-card-warning">
+            <p className="summary-label">
+              逾期
+            </p>
+
+            <h3 className="summary-value">
+              {taskSummary.overdueCount}
+            </h3>
+          </div>
+
+          <div className="summary-card summary-card-danger">
+            <p className="summary-label">
+              高優先級
+            </p>
+
+            <h3 className="summary-value">
+              {taskSummary.highPriorityCount}
+            </h3>
+          </div>
+        </div>
+      </section>
 
       <section className="schedule-section">
         <h2 className="section-title">
