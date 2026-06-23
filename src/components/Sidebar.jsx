@@ -4,14 +4,20 @@ function Sidebar({
   recurringTasks,
   addRecurringTask,
   toggleRecurringTask,
-  deleteRecurringTask
+  deleteRecurringTask,
+  actionLoading
 }) {
-
   const [recurringText, setRecurringText] = useState("");
   const [repeatType, setRepeatType] = useState("daily");
 
-  const handleAddRecurringTask = async() => {
-    await addRecurringTask(recurringText,repeatType);
+  const handleAddRecurringTask = async () => {
+    if (recurringText.trim() === "") {
+      alert("請輸入重複任務內容");
+      return;
+    }
+
+    await addRecurringTask(recurringText, repeatType);
+
     setRecurringText("");
     setRepeatType("daily");
   };
@@ -22,73 +28,79 @@ function Sidebar({
     monthly: "每月"
   };
 
-return (
-  <div className="sidebar">
-    <h3 className="sidebar-title">重複任務</h3>
+  return (
+    <div className="sidebar">
+      <h3 className="sidebar-title">重複任務</h3>
 
-    <input
-      className="recurring-input"
-      type="text"
-      placeholder="新增重複任務"
-      value={recurringText}
-      onChange={(e) => setRecurringText(e.target.value)}
-    />
+      <input
+        className="recurring-input"
+        type="text"
+        placeholder="新增重複任務"
+        value={recurringText}
+        onChange={(e) => setRecurringText(e.target.value)}
+        disabled={actionLoading}
+      />
 
-    <select
-      className="recurring-select"
-      value={repeatType}
-      onChange={(e) => setRepeatType(e.target.value)}
-    >
-      <option value="daily">每天</option>
-      <option value="weekly">每週</option>
-      <option value="monthly">每月</option>
-    </select>
+      <select
+        className="recurring-select"
+        value={repeatType}
+        onChange={(e) => setRepeatType(e.target.value)}
+        disabled={actionLoading}
+      >
+        <option value="daily">每天</option>
+        <option value="weekly">每週</option>
+        <option value="monthly">每月</option>
+      </select>
 
-    <button
-      className="recurring-add-button"
-      onClick={handleAddRecurringTask}
-    >
-      新增
-    </button>
+      <button
+        className="recurring-add-button"
+        onClick={handleAddRecurringTask}
+        disabled={actionLoading}
+      >
+        {actionLoading ? "處理中..." : "新增"}
+      </button>
 
-    <div className="recurring-list">
-      {recurringTasks.map(task => (
-        <div
-          key={task.id}
-          className={
-            task.isDoneToday === 1
-              ? "recurring-item recurring-item-done"
-              : "recurring-item"
-          }
-        >
-          <div className="recurring-item-content">
-            <label className="recurring-checkbox-label">
-              <input
-                type="checkbox"
-                checked={task.isDoneToday === 1}
-                onChange={() => toggleRecurringTask(task.id)}
-              />
-
-              <span className="recurring-task-text">
-                {task.text}
-              </span>
-            </label>
-
-            <span className="recurring-type-badge">
-              {repeatLabel[task.repeatType]}
-            </span>
-          </div>
-
-          <button
-            className="recurring-delete-button"
-            onClick={() => deleteRecurringTask(task.id)}
+      <div className="recurring-list">
+        {recurringTasks.map(task => (
+          <div
+            key={task.id}
+            className={
+              task.isDoneToday === 1
+                ? "recurring-item recurring-item-done"
+                : "recurring-item"
+            }
           >
-            刪除
-          </button>
-        </div>
-      ))}
+            <div className="recurring-item-content">
+              <label className="recurring-checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={task.isDoneToday === 1}
+                  onChange={() => toggleRecurringTask(task.id)}
+                  disabled={actionLoading}
+                />
+
+                <span className="recurring-task-text">
+                  {task.text}
+                </span>
+              </label>
+
+              <span className="recurring-type-badge">
+                {repeatLabel[task.repeatType]}
+              </span>
+            </div>
+
+            <button
+              className="recurring-delete-button"
+              onClick={() => deleteRecurringTask(task.id)}
+              disabled={actionLoading}
+            >
+              刪除
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
 }
+
 export default Sidebar;

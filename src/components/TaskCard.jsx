@@ -1,28 +1,30 @@
 import { useDraggable } from "@dnd-kit/core";
-
 import { useState } from "react";
+
 import getTaskDateStatus from "../utils/getTaskDateStatus";
+
 function TaskCard({
   task,
   moveTask,
   deleteTask,
-  editTask
+  editTask,
+  actionLoading
 }) {
-
-  const{
+  const {
     attributes,
     listeners,
     setNodeRef,
     transform
   } = useDraggable({
-    id: task.id
+    id: task.id,
+    disabled: actionLoading
   });
 
   const dragStyle = transform
-  ?{
-    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`
-  }
-  : undefined;
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`
+      }
+    : undefined;
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -50,15 +52,15 @@ function TaskCard({
   };
 
   const taskPriority = task.priority || "medium";
-  const dateStatus = getTaskDateStatus(task); 
+  const dateStatus = getTaskDateStatus(task);
 
-  const saveEdit = async () =>{
-    if(editText.trim() === "") {
+  const saveEdit = async () => {
+    if (editText.trim() === "") {
       alert("任務名稱不能為空");
       return;
     }
 
-    await editTask(task.id,{
+    await editTask(task.id, {
       text: editText,
       priority: editPriority,
       startDate: editStartDate,
@@ -68,7 +70,7 @@ function TaskCard({
     setIsEditing(false);
   };
 
-  const cancelEdit = () =>{
+  const cancelEdit = () => {
     setEditText(task.text);
     setEditPriority(task.priority || "medium");
     setEditStartDate(task.startDate || "");
@@ -76,7 +78,7 @@ function TaskCard({
     setIsEditing(false);
   };
 
-  if (isEditing){
+  if (isEditing) {
     return (
       <div className="task-card">
         <input
@@ -84,12 +86,14 @@ function TaskCard({
           type="text"
           value={editText}
           onChange={(e) => setEditText(e.target.value)}
+          disabled={actionLoading}
         />
 
         <select
           className="edit-select"
           value={editPriority}
           onChange={(e) => setEditPriority(e.target.value)}
+          disabled={actionLoading}
         >
           <option value="high">高</option>
           <option value="medium">中</option>
@@ -101,6 +105,7 @@ function TaskCard({
           type="date"
           value={editStartDate}
           onChange={(e) => setEditStartDate(e.target.value)}
+          disabled={actionLoading}
         />
 
         <input
@@ -108,19 +113,22 @@ function TaskCard({
           type="date"
           value={editEndDate}
           onChange={(e) => setEditEndDate(e.target.value)}
+          disabled={actionLoading}
         />
 
         <div className="task-card-actions">
           <button
             className="btn-primary"
             onClick={saveEdit}
+            disabled={actionLoading}
           >
-            儲存
+            {actionLoading ? "儲存中..." : "儲存"}
           </button>
 
           <button
             className="btn-secondary"
             onClick={cancelEdit}
+            disabled={actionLoading}
           >
             取消
           </button>
@@ -130,19 +138,22 @@ function TaskCard({
   }
 
   return (
-    <div 
+    <div
       ref={setNodeRef}
       style={dragStyle}
       className="task-card"
-      >
-
+    >
       <div className="task-card-header">
         <p className="task-card-title">
           {task.text}
         </p>
 
         <div
-          className="task-drag-handle"
+          className={
+            actionLoading
+              ? "task-drag-handle task-drag-handle-disabled"
+              : "task-drag-handle"
+          }
           {...listeners}
           {...attributes}
         >
@@ -174,6 +185,7 @@ function TaskCard({
           <button
             className="btn-primary"
             onClick={() => moveTask(task.id)}
+            disabled={actionLoading}
           >
             →
           </button>
@@ -182,6 +194,7 @@ function TaskCard({
         <button
           className="btn-secondary"
           onClick={() => setIsEditing(true)}
+          disabled={actionLoading}
         >
           編輯
         </button>
@@ -189,6 +202,7 @@ function TaskCard({
         <button
           className="btn-danger"
           onClick={() => deleteTask(task.id)}
+          disabled={actionLoading}
         >
           刪除
         </button>

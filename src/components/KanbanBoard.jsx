@@ -13,21 +13,20 @@ function KanbanBoard({
   moveTask,
   updateTaskStatus,
   deleteTask,
-  editTask }) {
-  const todoTasks =
-    tasks.filter(
-      task => task.status === "todo"
-    );
+  editTask,
+  actionLoading
+}) {
+  const todoTasks = tasks.filter(task => {
+    return task.status === "todo";
+  });
 
-  const doingTasks =
-    tasks.filter(
-     task => task.status === "doing"
-    );
+  const doingTasks = tasks.filter(task => {
+    return task.status === "doing";
+  });
 
-  const doneTasks =
-    tasks.filter(
-      task => task.status === "done"
-    );
+  const doneTasks = tasks.filter(task => {
+    return task.status === "done";
+  });
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -44,32 +43,38 @@ function KanbanBoard({
   );
 
   const handleDragEnd = (event) => {
+    if (actionLoading) {
+      return;
+    }
+
     const { active, over } = event;
 
-    if(!over){
+    if (!over) {
       return;
     }
 
     const taskId = active.id;
-    const newStatus = over.id
+    const newStatus = over.id;
 
-    if(
+    if (
       newStatus !== "todo" &&
       newStatus !== "doing" &&
       newStatus !== "done"
-    ){
+    ) {
       return;
     }
 
     updateTaskStatus(taskId, newStatus);
-  }
+  };
+
   return (
     <div>
       <h2 className="kanban-title">Kanban Board</h2>
 
-      <DndContext 
+      <DndContext
         sensors={sensors}
-        onDragEnd={handleDragEnd}>
+        onDragEnd={handleDragEnd}
+      >
         <div className="kanban-container">
           <KanbanColumn
             id="todo"
@@ -78,6 +83,7 @@ function KanbanBoard({
             moveTask={moveTask}
             deleteTask={deleteTask}
             editTask={editTask}
+            actionLoading={actionLoading}
           />
 
           <KanbanColumn
@@ -87,6 +93,7 @@ function KanbanBoard({
             moveTask={moveTask}
             deleteTask={deleteTask}
             editTask={editTask}
+            actionLoading={actionLoading}
           />
 
           <KanbanColumn
@@ -96,6 +103,7 @@ function KanbanBoard({
             moveTask={moveTask}
             deleteTask={deleteTask}
             editTask={editTask}
+            actionLoading={actionLoading}
           />
         </div>
       </DndContext>

@@ -7,7 +7,8 @@ function TaskInput({
   setStartDate,
   endDate,
   setEndDate,
-  addTask
+  addTask,
+  actionLoading
 }) {
   return (
     <div className="task-input-card">
@@ -19,6 +20,7 @@ function TaskInput({
         placeholder="請輸入任務名稱"
         value={taskText}
         onChange={(e) => setTaskText(e.target.value)}
+        disabled={actionLoading}
       />
 
       <div className="task-setting-row">
@@ -28,6 +30,7 @@ function TaskInput({
             className="task-select"
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
+            disabled={actionLoading}
           >
             <option value="high">高</option>
             <option value="medium">中</option>
@@ -42,6 +45,7 @@ function TaskInput({
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
+            disabled={actionLoading}
           />
         </label>
 
@@ -52,6 +56,7 @@ function TaskInput({
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
+            disabled={actionLoading}
           />
         </label>
       </div>
@@ -59,8 +64,9 @@ function TaskInput({
       <button
         className="btn-primary"
         onClick={addTask}
+        disabled={actionLoading}
       >
-        新增任務
+        {actionLoading ? "新增中..." : "新增任務"}
       </button>
     </div>
   );

@@ -117,3 +117,15 @@
 .recurring-delete-button:hover {
   background-color: #fecaca;
 }
+
+.recurring-input:disabled,
+.recurring-select:disabled,
+.recurring-add-button:disabled,
+.recurring-delete-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.recurring-checkbox-label input:disabled {
+  cursor: not-allowed;
+}

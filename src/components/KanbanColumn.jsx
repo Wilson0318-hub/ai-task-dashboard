@@ -8,34 +8,35 @@ function KanbanColumn({
   tasks,
   moveTask,
   deleteTask,
-  editTask 
+  editTask,
+  actionLoading
 }) {
-  const { setNodeRef, isOver} = useDroppable({
+  const { setNodeRef, isOver } = useDroppable({
     id
   });
+
   return (
     <div
-     ref ={ setNodeRef}
-     className={
-      isOver
-      ? "column column-over"
-      : "column"
-     }
+      ref={setNodeRef}
+      className={
+        isOver
+          ? "column column-over"
+          : "column"
+      }
     >
-      
       <h3 className="column-title">{title}</h3>
 
       {tasks.map(task => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            moveTask={moveTask}
-            deleteTask={deleteTask}
-            editTask={editTask}
-            />
-        ))}
+        <TaskCard
+          key={task.id}
+          task={task}
+          moveTask={moveTask}
+          deleteTask={deleteTask}
+          editTask={editTask}
+          actionLoading={actionLoading}
+        />
+      ))}
     </div>
-
   );
 }
 

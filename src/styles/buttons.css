@@ -41,3 +41,15 @@
 .btn-danger:hover {
   background-color: #dc2626;
 }
+
+button:disabled,
+input:disabled,
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.task-drag-handle-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
