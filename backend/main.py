@@ -2,9 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 import models
+
 from database import engine
+
 from routers import tasks
 from routers import recurring_tasks
+from routers import auth
 
 
 models.Base.metadata.create_all(bind=engine)
@@ -27,6 +30,7 @@ app.add_middleware(
 
 app.include_router(tasks.router)
 app.include_router(recurring_tasks.router)
+app.include_router(auth.router)
 
 
 @app.get("/")
