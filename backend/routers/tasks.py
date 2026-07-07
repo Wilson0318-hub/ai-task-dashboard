@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 import models
 import schemas
 from database import SessionLocal
+from routers.auth import get_current_user
 
 
 router = APIRouter(
@@ -22,8 +23,13 @@ def get_db():
 
 
 @router.get("", response_model=list[schemas.TaskResponse])
-def get_tasks(db: Session = Depends(get_db)):
-    tasks = db.query(models.Task).all()
+def get_tasks(
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
+    ):
+    tasks = db.query(models.Task).filter(
+        models.Task.user_id == current_user.id
+    ).all()
 
     return tasks
 
@@ -31,9 +37,11 @@ def get_tasks(db: Session = Depends(get_db)):
 @router.post("", response_model=schemas.TaskResponse)
 def create_task(
     task: schemas.TaskCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
 ):
     new_task = models.Task(
+        user_id = current_user.id,
         text=task.text,
         status=task.status,
         priority=task.priority,
@@ -52,10 +60,12 @@ def create_task(
 def update_task(
     task_id: int,
     updated_task: schemas.TaskUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
 ):
     task = db.query(models.Task).filter(
-        models.Task.id == task_id
+        models.Task.id == task_id,
+        models.Task.user_id == current_user.id
     ).first()
 
     if task is None:
@@ -79,10 +89,12 @@ def update_task(
 @router.delete("/{task_id}")
 def delete_task(
     task_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
 ):
     task = db.query(models.Task).filter(
-        models.Task.id == task_id
+        models.Task.id == task_id,
+        models.Task.user_id == current_user.id
     ).first()
 
     if task is None:
