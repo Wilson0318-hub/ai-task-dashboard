@@ -1,8 +1,27 @@
+import { getToken } from "../utils/authStorage";
+
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 
+function getAuthHeaders() {
+  const token = getToken();
+
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`
+  };
+}
+
+
 export async function getTasks() {
-  const response = await fetch(`${API_BASE_URL}/tasks`);
+  const token = getToken();
+
+  const response = await fetch(`${API_BASE_URL}/tasks`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
 
   if (!response.ok) {
     throw new Error("Failed to fetch tasks");
@@ -15,16 +34,16 @@ export async function getTasks() {
 export async function createTask(task) {
   const response = await fetch(`${API_BASE_URL}/tasks`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify(task)
   });
 
   if (!response.ok) {
     const errorText = await response.text();
+
     console.error("Create task failed status:", response.status);
     console.error("Create task failed body:", errorText);
+
     throw new Error("Failed to create task");
   }
 
@@ -35,16 +54,16 @@ export async function createTask(task) {
 export async function updateTask(taskId, task) {
   const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify(task)
   });
 
   if (!response.ok) {
     const errorText = await response.text();
+
     console.error("Update task failed status:", response.status);
     console.error("Update task failed body:", errorText);
+
     throw new Error("Failed to update task");
   }
 
@@ -53,14 +72,21 @@ export async function updateTask(taskId, task) {
 
 
 export async function deleteTaskApi(taskId) {
+  const token = getToken();
+
   const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
-    method: "DELETE"
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   });
 
   if (!response.ok) {
     const errorText = await response.text();
+
     console.error("Delete task failed status:", response.status);
     console.error("Delete task failed body:", errorText);
+
     throw new Error("Failed to delete task");
   }
 
